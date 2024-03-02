@@ -1,14 +1,15 @@
 import tkinter as tk
 import math
 
-class BookcaseApp:
+#--------------------------CLASSES-----------------------------------
+class WarehouseApp:
     def __init__(self, master):
         self.master = master
         self.master.title("Bookcase")
-        # Create a frame for the bookcase
-        self.Stellage1_frame = tk.Frame(self.master, bg="lightgray", bd=2, relief=tk.RAISED)
-        self.Stellage1_frame.pack( padx=200, pady=20)
-        # Create shelves
+        # Create a frame for the Warehouse
+        self.Warehouse_frame = tk.Frame(self.master, bg="black", bd=2, relief=tk.RAISED)
+        self.Warehouse_frame.pack( padx=50, pady=20)
+        # Create a frame for the shelves
         self.shelves = []
         columnN = 0
         rowN = 0
@@ -19,41 +20,53 @@ class BookcaseApp:
                 CN = 0
             elif stellN <2:
                 RN = 0
-                CN = columnN
+                CN = 5
             else:
-                RN = rowN -4
-                CN = 4
+                RN = rowN - 4
+                CN = 5
+            self.Shelf_frame = tk.Frame(self.Warehouse_frame, bg="lightgray", bd=2, relief=tk.SUNKEN)
+            self.Shelf_frame.grid(row=RN, column=CN, padx=10, pady=3, columnspan =4)
             for j in range(3):
 
-                Stellage_title = tk.Label(self.Stellage1_frame, text=f"A0{stellN+1}", bg="white", padx=10, pady=5,
-                                          font=("Arial 14 bold"),width=35, height=1)
-                Stellage_title.grid(row=RN, column=CN, padx=5, pady=5, columnspan =4)
-                Level_title = tk.Label(self.Stellage1_frame, text=f"Level {abs(j-3)} | N: {Stellage_title.cget("text")}.{abs(j-3)}", bg="lightblue", padx=10, pady=5)
-                Level_title.grid(row=RN+j+1, column=CN, padx=5, pady=5)
+                Shelf_title = tk.Label(self.Shelf_frame , text=f"A0{stellN+1}", bg="skyblue", padx=10, pady=5,
+                                          font=("Arial 14 bold"),width=38, height=1,relief=tk.RAISED)
+                Shelf_title.grid(row=RN, column=CN, padx=5, pady=3, columnspan =4)
+
+                Level_title = tk.Label(self.Shelf_frame , text=f"Level {abs(j-3)} | #{Shelf_title.cget("text")}.{abs(j-3)}", bg="lightblue", padx=10, pady=5)
+                Level_title.grid(row=RN+j+1, column=CN, padx=5, pady=3)
+
 
                 for i in range(3):
-                    shelf1 = tk.Button(self.Stellage1_frame, text=f"{Stellage_title.cget("text")}.{abs(j-3)}.{abs(i+1)}:    FREE", bg="lightgreen", padx=10, pady=5,
+                    shelf1 = tk.Button(self.Shelf_frame , text=f"{Shelf_title.cget("text")}.{abs(j-3)}.{abs(i+1)}:    FREE", bg="lightgreen", padx=10, pady=5,
                                      relief=tk.RAISED)
-                    shelf1.grid(row=RN+j+1, column=CN+i+1, padx=5, pady=5)
+                    shelf1.grid(row=RN+j+1, column=CN+i+1, padx=5, pady=3)
                     self.shelves.append(shelf1)
             columnN += 4
             rowN += 4
             stellN += 1
+        Row_lane = tk.Label(self.Warehouse_frame, bg="gold", padx=3, pady=3,
+                                width=1, height=50)
+        Row_lane.grid(row=0, column=4, padx=1, pady=1, rowspan=RN*2)
+
+    def search_for_empty(self):
+        current_cell = None
+
+    def insert_containers(self):
+        shelf_index = 1
+        cell_name =self.shelves[shelf_index].cget("text")[:9]
+
+        print(cell_name)
+        self.shelves[shelf_index].config(text=f"{cell_name}OCCUPIED",bg="RED",relief=tk.SUNKEN)
 
 
-
-    def add_books(self):
-        for i, book in enumerate(self.books):
-            shelf_index = i // 2
-            book_label = tk.Label(self.shelves[shelf_index], text=book, bg="white", padx=5, pady=2, relief=tk.GROOVE)
-            book_label.pack(fill=tk.X)
-
-
+#--------------------------Main Code-----------------------------------
 def main():
     root = tk.Tk()
     root.title("My Database")
-    app = BookcaseApp(root)
+    app = WarehouseApp(root)
+    app.insert_containers()
     root.mainloop()
+# def load_container(cont):
 
 
 

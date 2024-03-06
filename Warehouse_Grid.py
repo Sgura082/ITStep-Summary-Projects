@@ -41,8 +41,6 @@ class WarehouseApp:
             Shelf_title.grid(row=RN, column=CN, padx=5, pady=3, columnspan=4)
             shelf_new = Storage.W_Shelf(self.warehouse_struct,f"A0{stellN + 1}")
             for j in range(3):
-
-
                 Level_title = tk.Label(self.Shelf_frame , text=f"Level {abs(j-3)}", bg="lightblue", padx=10, pady=5)
                 Level_title.grid(row=RN+j+1, column=CN, padx=5, pady=3)
                 shelf_cell = tk.Button(self.Shelf_frame , text=f"{Shelf_title.cget("text")}.{abs(j-3)}:    FREE",width=15,anchor="w", bg="lightgreen", padx=10, pady=5,

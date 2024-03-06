@@ -5,25 +5,21 @@ import Warehouse_Grid as WG
 
 
 class OUTwindow():
-    def __init__(self,master):
+    def __init__(self,master,cell):
         self.master = master
-        Box_number_label = tk.Label(self.master, text="Box number:")
-        Box_number_label.grid(row=0, column=0, padx=10, pady=5, sticky=tk.W)
+        Cell_name_label = tk.Label(self.master, text=f"CELL N: {cell.name}",font=("Arial 10 bold"))
+        Cell_name_label.grid(row=0, column=0, padx=10, pady=5, sticky=tk.W)
+        Cell_box_label = tk.Label(self.master, text=f"Stored Box: {cell.cell_box}",font=("Arial 10 bold"))
+        Cell_box_label.grid(row=1, column=0, padx=10, pady=5, sticky=tk.W)
+        Cell_box_Contents_label = tk.Label(self.master, text=f"Box contents: {cell.cell_box.contents}",font=("Arial 10 bold"))
+        Cell_box_Contents_label.grid(row=2, column=0, padx=10, pady=5, sticky=tk.W)
 
-        Box_number_entry = tk.Entry(self.master)
-        Box_number_entry.grid(row=0, column=1, padx=10, pady=5)
 
-        def take_box():
-            oper.take_box_frome_warehouse(Box_number_entry.get())
-        in_button = tk.Button(self.master, text=f"Take out the Box", font=("Arial 10 bold"), width=15, anchor="c", bg="gray", padx=10,
-                              pady=5,
-                              relief=tk.RAISED, command=take_box)
-        in_button.grid(row=4, column=1, padx=10, pady=5)
 
-def main(data):
+def main(cell):
     root = tk.Tk()
     root.title("Outbound operations")
-    window = OUTwindow(root)
+    window = OUTwindow(root,cell)
     width = 500
     height = 400
     ws = root.winfo_screenwidth()

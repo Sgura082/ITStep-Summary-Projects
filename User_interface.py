@@ -1,41 +1,26 @@
 import tkinter as tk
 import Warehouse_Grid as WG
-import Storage_structure as Storage
-# def submit():
-#     name = name_entry.get()
-#     age = age_entry.get()
-#     print("Name:", name)
-#     print("Age:", age)
-
-
+import Inbound_operations_window as inbound
+import Outbound_operations_window as outbound
+import main as BOSS
 #-------------Global Variables--------------
-global Warehousename
-Warehousename = ""
 #-------------Main Window----------------
-class MAINAPP():
-    def __init__(self, master):
-        self.master = master
-        # Create a frame for the Warehouse
-        self.Mainframe = tk.Frame(self.master, bg="black", bd=2, relief=tk.RAISED)
-        self.Mainframe.pack(padx=50, pady=20)
 
-def open_warehouse_grid():
-    WG.main()
-def open_input_window():
-    Main_Menu.destroy()
-    WG.main()
+def SaveToFile():
+    BOSS.save_to_file()
 
-def open_output_window():
-    Main_Menu.destroy()
-    WG.main()
+def OpenFile():
+    BOSS.Open_file()
 def Inbound():
-    pass
+    inbound.main()
+
 def Outbound():
-    pass
+    outbound.main()
+
 
 
 # ------------Creates the WELCOME window
-main = WG.main()
+Grid = WG.main()
 Main_Menu = tk.Tk()
 Main_Menu.title("WAREHOUSE APP 1.0")
 
@@ -46,8 +31,15 @@ in_button = tk.Button(Main_Menu , text=f"IN Operations",font=("Arial 10 bold"),w
                                      relief=tk.RAISED,command =Inbound)
 out_button = tk.Button(Main_Menu , text=f"OUT Operations",font=("Arial 10 bold"),width=15,anchor="c", bg="gray", padx=10, pady=5,
                                      relief=tk.RAISED, command =Outbound)
+Open_file_button = tk.Button(Main_Menu , text=f"Open file",font=("Arial 10 bold"),width=15,anchor="c", bg="gray", padx=10, pady=5,
+                                     relief=tk.RAISED,command =OpenFile)
+SaveTo_file_button = tk.Button(Main_Menu , text=f"Save to file",font=("Arial 10 bold"),width=15,anchor="c", bg="gray", padx=10, pady=5,
+                                     relief=tk.RAISED, command =SaveToFile)
+
 in_button.pack()
 out_button.pack()
+Open_file_button.pack()
+SaveTo_file_button.pack()
 
 
 width = 500

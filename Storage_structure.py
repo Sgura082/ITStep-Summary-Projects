@@ -1,37 +1,48 @@
 
-
+import Cell_details_window as CDW
 #--------------------------CLASSES-----------------------------------
 class Box():
     def __init__(self,name):
         self.name = name
         self.contents = None
+
+    def __str__(self):
+        return self.name
 class W_Cell():
-    def __init__(self, name):
+    def __init__(self, name, label):
         self.name = name
         self.parent = None
         self.cell_box =None
         self.status = "FREE"
         self.cell_above = None
         self.cell_below = None
+        self.label = label
+        self.label.configure(command=self.show_detail)
     def __str__(self):
-        return (f"Name: {self.name}"
-                f"Parent: {self.parent}\n"
-                f"cell_box: {self.cell_box}\n"
-                f"Cell_above: {self.cell_above}\n"
-                f"Cell_below: {self.cell_below}"
-                )
+        return (f"-------------------\n"
+            f"Name: {self.name}, Parent: {self.parent}, Status: {self.status}, Box: {self.cell_box}")
+    def show_detail(self):
+        CDW.main(self)
     def put_box_in_cell(self,box):
-        assert isinstance(box,Box)
-        self.cell_box = box
+        if box == None:
+            return
+        if isinstance(box,Box):
+            self.cell_box = box
+        else:
+            a = Box(str(box))
+            self.cell_box = a
         self.status = "OCCUPIED"
+    def clear_contents(self):
+        self.cell_box = None
 class W_Shelf():
     def __init__(self,warehouse,name):
+        warehouse.Shelfs_in_warehouse.append(self)
         self.name =name
         self.parent = warehouse
         self.first_cell =None
         self.shelf_cells =[]
-        self.shelf_above = None
-        self.shelf_below = None
+        # self.shelf_above = None
+        # self.shelf_below = None
     def __str__(self):
         return f"{self.name}"
     def add_cell(self,cell):
@@ -39,11 +50,12 @@ class W_Shelf():
         if self.first_cell == None:
             self.first_cell = cell
         if self.first_cell == cell:
+            self.shelf_cells.append(cell)
             return
         current_cell = self.first_cell
         while current_cell.cell_above:
-            current_cell = current_cell.above
-        current_cell.above = cell
+            current_cell = current_cell.cell_above
+        current_cell.cell_above = cell
         cell.cell_below = current_cell
         self.shelf_cells.append(cell)
 class Warehouse():
@@ -54,5 +66,4 @@ class Warehouse():
         count_of_cells = 0
         for shelf in self.Shelfs_in_warehouse:
             count_of_cells += len(shelf.shelf_cells)
-
         return f"Total number of cells: {count_of_cells}"

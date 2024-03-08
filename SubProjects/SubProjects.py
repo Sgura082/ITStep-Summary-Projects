@@ -41,6 +41,8 @@ class Task():
 
 # -----------TASK OBJECTS----------------
 Task01 = Task("Calculator")
+
+
 def task1_body():
     pass
     # ----------------Task Variables----------------------------------
@@ -52,9 +54,10 @@ def task1_body():
                   '%': {"Name": "   Modulus", "Formula": lambda x, y: x % y},
                   '**': {"Name": "  Exponentiation", "Formula": lambda x, y: x ** y},
                   'root': {"Name": "Getting root", "Formula": lambda x, y: x ** (1 / y)}}
+
     # ----------------Task Classes------------------------------------
     # ----------------Task Functions----------------------------------
-    def input_loop_with_validation(N,opera =""):
+    def input_loop_with_validation(N, opera=""):
         Control_for_zero_division = ["/", "//", "%"]
         while True:
             userNum = input(f"Enter number {N}: ")
@@ -82,62 +85,109 @@ def task1_body():
     userNum2 = float(input_loop_with_validation(2, userOper))
     result = Calculator.get(userOper).get("Formula")(userNum1, userNum2)
     print(f"\nResult of calculation: \n{userNum1} {userOper} {userNum2} = {result}")
+
+
 Task01.write_function(task1_body)
 
-#-------------------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------------------
 
 Task02 = Task("Library management")
+
+
 def task2_body():
     pass
+
     # ----------------Task Variables----------------------------------
     # ----------------Task Classes------------------------------------
     class Book():
-        def __init__(self,title,author,issue_date,genre,language,rating):
-            self.title =title
+        def __init__(self, title, author, issue_date, genre, rating):
+            self.title = title
             self.author = author
             self.issue_date = issue_date
-            self.genre =genre
-            self.language = language
-            self.critics_rating = rating #Rating of a book from min 1 to max 5
-            self.borrower = None #Name of person who borrowed the book from the library
+            self.genre = genre
+            self.critics_rating = rating  # Rating of a book from min 1 to max 5
+            self.borrower = None  # Name of person who borrowed the book from the library
             self.status = "IN Library"
             self.time_out_of_library = 0.0  # Time the book spent outside library while being borrowed by the reader
+        def __str__(self):
+            return (f"Title: {self.title}, Author: {self.author}, "
+                    f"Issue Date: {self.issue_date}, Genre: {self.genre}, Rating: {self.critics_rating}")
+
     class Reader():
-        def __init__(self,name,id,student_status):
+        def __init__(self, name, id, student_status):
             self.name = name
             self.id = id
-            self.student_status=student_status
+            self.student_status = student_status
+
     class Library():
-        def __init__(self,name):
+        def __init__(self, name):
             self.name = name
             self.book_list = []
-            self.book_borrowers = {'white_list':[{'Borrower': object,
-                                                  'Number of books borrowed': 0,
-                                                  'Number of overdue books': 0}],
+            self.book_borrowers = {'white_list': [{'Borrower': object,
+                                                   'Number of books borrowed': 0,
+                                                   'Number of overdue books': 0}],
                                    'blacklist': [{'Borrower': object,
                                                   'Number of books borrowed': 0,
                                                   'Number of overdue books': 0}],
                                    }
 
-        def add_book(self,book):
-            assert isinstance(book,Book)
+        def add_book(self, book):
+            assert isinstance(book, Book)
             self.book_list.append(book)
-        def search_and_disp_books(self,title="0",author="0",issue_date="0",genre="0",laguage="0",rating="0"):
-            display_list =[]
-            if title == "0":
+
+        def search_and_disp_books(self, title="", author="", issue_date="", genre="", rating=""):
+            display_list = []
+            if title == "":
                 title_search = 0
-            if author == "0":
+            else:
+                title_search = 1
+            if author == "":
                 author_search = 0
-            if issue_date == "0":
+            else:
+                author_search = 1
+            if issue_date == "":
                 issue_date_search = 0
-            if author == "0":
-                author_search = 0
-            auth_check = 1
-
+            else:
+                issue_date_search = 1
+            if genre == "":
+                genre_search = 0
+            else:
+                genre_search = 1
+            if rating == "":
+                rating_search = 0
+            else:
+                rating_search = 1
+            search_pattern = [title_search, author_search, issue_date_search, genre_search, rating_search]
             for book in self.book_list:
-                if title in book.title:
+                current_book_patter_validation = []
+                if title in book.title or title_search == 0:
+                    current_book_patter_validation.append(1)
+                else:
+                    current_book_patter_validation.append(0)
+                if author in book.author or author_search == 0:
+                    current_book_patter_validation.append(1)
+                else:
+                    current_book_patter_validation.append(0)
+                if issue_date == book.issue_date or issue_date_search == 0:
+                    current_book_patter_validation.append(1)
+                else:
+                    current_book_patter_validation.append(0)
+                if genre == book.genre or genre_search == 0:
+                    current_book_patter_validation.append(1)
+                else:
+                    current_book_patter_validation.append(0)
+                if rating < book.rating or rating_search == 0:
+                    current_book_patter_validation.append(1)
+                else:
+                    current_book_patter_validation.append(0)
+                #checks if the bookk satisfies the needed search pattern
+                if search_pattern == current_book_patter_validation:
                     display_list.append(book)
-
+            return display_list
+        def display_all_books(self):
+            display_list = []
+            for book in self.book_list:
+                print(f"{self.book_list.index(book)+1}: {book}")
 
     # ----------------Task Functions----------------------------------
     # ----------------Task BODY---------------------------------------
@@ -145,9 +195,10 @@ def task2_body():
 
 Task02.write_function(task2_body)
 
-
-#-------------------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------------------
 Task03 = Task("x")
+
+
 def task3_body():
     pass
     # ----------------Task Variables----------------------------------

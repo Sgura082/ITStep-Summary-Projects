@@ -20,14 +20,6 @@ def encoder(warehouse):
         shelf_dict_lst.append(shelf_dict)
     data = {"Warehouse_name": warehouse.name, "Shelves_in_warehouse": shelf_dict_lst}
     return data
-def save_to_file():
-    df = pd.DataFrame(encoder(WG.Warehouse[0]))
-    df.to_csv('data.csv', index=False)
-def Open_file():
-    df = pd.read_csv('data.csv', index_col=1)
-    a = df.to_dict()
-    print(df)
-    # for shelf in WG.Warehouse[0].Shelfs_in_warehouse:
-    #     for cell in shelf.shelf_cells:
+
 
 

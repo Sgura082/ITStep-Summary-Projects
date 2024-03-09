@@ -34,13 +34,28 @@ def store_box_in_warehouse(box, content):
         box = "0" * (6 - len(box)) + box
     box = "B" + box
     for shelf in warehouse.Shelfs_in_warehouse:  # search for free cell in warehouse
-        for cell in shelf.shelf_cells:
-            if cell.cell_box == None:
-                txt = cell.label.cget("text")
-                cell.put_box_in_cell(box, content)
+        #1-----------------------Checking if box with such number already is stored-----------------
+        current_cell = shelf.first_cell
+        while True:
+            if current_cell.cell_box != None:
+                if current_cell.cell_box.name == box:
+                    message_to_be_displayed = (f"Box with number {box} is already in warehouse"
+                                               f"\nStored in cell {current_cell.name}")
+                    return
+            if current_cell.cell_above == None:
+                break
+            current_cell = current_cell.cell_above
+        #2------------------------Checking for empty cell--------------------------------------------
+        current_cell = shelf.first_cell
+        while True:
+            if current_cell.cell_box == None:
+                txt = current_cell.label.cget("text")
+                current_cell.put_box_in_cell(box, content)
                 message_to_be_displayed = f"Your box N: {box} was stored in cell N: {txt[:5]}"
                 return
-            index += 1
+            if current_cell.cell_above == None:
+                break
+            current_cell = current_cell.cell_above
     message_to_be_displayed = "No free cells were found!!!"
 
 

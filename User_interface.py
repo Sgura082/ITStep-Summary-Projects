@@ -8,9 +8,10 @@ import Operations as oper
 
 def SaveToFile():
     oper.save_to_file()
-
+    System_message_label.configure(text="Your Session was successfully SAVED to file data.json!!!")
 def OpenFile():
     oper.Open_file()
+    System_message_label.configure(text="Your Session was successfully RETRIEVED from file data.json!!!")
 def Inbound(): #Summons window from Inbound_operations_window
     inbound.main()
 
@@ -37,14 +38,19 @@ out_button = tk.Button(Main_Menu , text=f"OUT Operations",font=("Arial 10 bold")
 out_button.pack()
 
 # ------------Open Json file to retrieve warehouse data from previous session------------------------------
-Open_file_button = tk.Button(Main_Menu , text=f"Open file",font=("Arial 10 bold"),width=15,anchor="c", bg="gray", padx=10, pady=5,
-                                     relief=tk.RAISED,command =OpenFile)
+Open_file_button = tk.Button(Main_Menu , text=f"Open file",font=("Arial 10 bold"),width=15,anchor="c", bg="gray",
+                             padx=10, pady=5,relief=tk.RAISED,command =OpenFile)
 Open_file_button.pack()
 
 # ------------Save current session data to Json file ------------------------------------------------------
-SaveTo_file_button = tk.Button(Main_Menu , text=f"Save to file",font=("Arial 10 bold"),width=15,anchor="c", bg="gray", padx=10, pady=5,
-                                     relief=tk.RAISED, command =SaveToFile)
+SaveTo_file_button = tk.Button(Main_Menu , text=f"Save to file",font=("Arial 10 bold"),width=15,anchor="c", bg="gray",
+                               padx=10, pady=5,relief=tk.RAISED, command =SaveToFile)
 SaveTo_file_button.pack()
+
+#-------------System message label-------------------------------------------------------------------------
+System_message_label = tk.Label(Main_Menu, text=f"---------------------------------------",font=("Arial 10 bold"))
+System_message_label.pack()
+
 
 
 width = 500

@@ -11,7 +11,8 @@ class OUTwindow():
 
         Box_number_entry = tk.Entry(self.master)
         Box_number_entry.grid(row=0, column=3, padx=10, pady=5, columnspan =2)
-        System_message_label = tk.Label(self.master, text=f"-----------------------")
+        System_message_label = tk.Label(self.master, text=f"-----------------------",anchor="w", justify="left",
+                                        font=("Arial 10 bold"))
         System_message_label.grid(row=10, column=0, padx=10, pady=5, sticky=tk.W,columnspan=4)
 
         def take_box():

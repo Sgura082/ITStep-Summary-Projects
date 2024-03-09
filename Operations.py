@@ -20,8 +20,8 @@ def store_box_in_warehouse(box, content):
                                     # their contents
 
     global message_to_be_displayed
-    #-----Box number validation------------------------------------------------------------------------------
 
+    #-----Box number validation------------------------------------------------------------------------------
     if len(box) > 6: #-----Box number- length validation------------------------------------------------------
         message_to_be_displayed = "Box number cannot have more than 6 digits!!!!\nPlease enter proper Number"
         return
@@ -32,6 +32,11 @@ def store_box_in_warehouse(box, content):
     if len(box) < 6:
         box = "0" * (6 - len(box)) + box
     box = "B" + box
+
+    #------Box contents validation----------------------------------------------------------------------------
+    if len(content) < 1:
+        message_to_be_displayed = "Box contents  can't be empty \nPlease enter content description!!!"
+        return
     for shelf in warehouse.Shelfs_in_warehouse:  # search for free cell in warehouse
         #/1-----------------------Checking if box with such number already is stored-----------------
         current_cell = shelf.first_cell
@@ -45,6 +50,7 @@ def store_box_in_warehouse(box, content):
                 break
             current_cell = current_cell.cell_above #1/-----------------------------------------------
         #2------------------------Checking for empty cell--------------------------------------------
+    for shelf in warehouse.Shelfs_in_warehouse:  # search for free cell in warehouse
         current_cell = shelf.first_cell
         while True:
             if current_cell.cell_box == None:

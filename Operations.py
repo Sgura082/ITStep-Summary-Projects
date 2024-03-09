@@ -8,7 +8,7 @@ message_to_be_displayed = None
 
 
 # --------------------------------------------------------------------------------------------------
-def store_box_in_warehouse(box, content):
+def store_box_in_warehouse(box, content, desired_cell=""):
     """
     Searches for a free cell inside the warehouse among its shelves. when such is found cell class method
     put_box_in_cell is called to store the box and its contents within the cell.
@@ -37,7 +37,7 @@ def store_box_in_warehouse(box, content):
     if len(content) < 1:
         message_to_be_displayed = "Box contents  can't be empty \nPlease enter content description!!!"
         return
-    for shelf in warehouse.Shelfs_in_warehouse:  # search for free cell in warehouse
+    for shelf in warehouse.Shelfs_in_warehouse:
         #/1-----------------------Checking if box with such number already is stored-----------------
         current_cell = shelf.first_cell
         while True:
@@ -48,9 +48,24 @@ def store_box_in_warehouse(box, content):
                     return
             if current_cell.cell_above == None:
                 break
-            current_cell = current_cell.cell_above #1/-----------------------------------------------
-        #2------------------------Checking for empty cell--------------------------------------------
-    for shelf in warehouse.Shelfs_in_warehouse:  # search for free cell in warehouse
+            current_cell = current_cell.cell_above #1/------------------------------------------------
+        #/2------------------------Checking if desired Cell is empty----------------------------------
+    if desired_cell != "":
+        for shelf in warehouse.Shelfs_in_warehouse:
+            current_cell = shelf.first_cell
+            while True:
+                if current_cell.name == desired_cell:
+                    if current_cell.cell_box == None:
+                        txt = current_cell.label.cget("text")
+                        current_cell.put_box_in_cell(box, content)
+                        message_to_be_displayed = f"Your box N: {box} was stored in cell N: {txt[:5]}"
+                        return
+                if current_cell.cell_above == None:
+                    break
+                current_cell = current_cell.cell_above
+
+        #/3------------------------Checking for empty cell--------------------------------------------
+    for shelf in warehouse.Shelfs_in_warehouse:
         current_cell = shelf.first_cell
         while True:
             if current_cell.cell_box == None:
@@ -60,7 +75,7 @@ def store_box_in_warehouse(box, content):
                 return
             if current_cell.cell_above == None:
                 break
-            current_cell = current_cell.cell_above #2/-----------------------------------------------
+            current_cell = current_cell.cell_above #3/-----------------------------------------------
     message_to_be_displayed = "No free cells were found!!!"
 
 

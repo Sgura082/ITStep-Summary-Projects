@@ -19,6 +19,12 @@ class INwindow():
         Box_content_entry = tk.Entry(self.master)
         Box_content_entry.grid(row=1, column=3, padx=5, pady=5, columnspan =2)#----/
 
+        #-/--Adds label and entry field for Desired cell-----------------------------------
+        Desired_cell_label = tk.Label(self.master, text="Destination Cell:")
+        Desired_cell_label.grid(row=2, column=0, padx=5, pady=5, sticky=tk.W, columnspan =2)
+        Desired_cell_entry = tk.Entry(self.master)
+        Desired_cell_entry.grid(row=2, column=3, padx=5, pady=5, columnspan =2)#----/
+
         # -/--Adds label for system message which displays errors or successful operation status------------------
         System_message_label = tk.Label(self.master, text=f"-----------------------",anchor="w", justify="left",
                                         font=("Arial 10 bold"))
@@ -27,7 +33,7 @@ class INwindow():
         #------Function used call a function from Operations module which will search and place-------------------
         #--------the box in warehouse cell
         def add_box():
-            oper.store_box_in_warehouse(Box_number_entry.get(),Box_content_entry.get())
+            oper.store_box_in_warehouse(Box_number_entry.get(),Box_content_entry.get(),Desired_cell_entry.get())
             System_message_label.configure(text=f"{oper.message_to_be_displayed}",)
 
         #-----Adds button wich when clicked will use function above

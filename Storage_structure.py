@@ -23,7 +23,7 @@ class W_Cell():
             f"Name: {self.name}, Parent: {self.parent}, Status: {self.status}, Box: {self.cell_box}")
     def show_detail(self):
         CDW.main(self)
-    def put_box_in_cell(self,box):
+    def put_box_in_cell(self,box,box_contents):
         if box == None:
             return
         if isinstance(box,Box):
@@ -31,6 +31,7 @@ class W_Cell():
         else:
             a = Box(str(box))
             self.cell_box = a
+        self.cell_box.contents = box_contents
         self.status = "OCCUPIED"
     def clear_contents(self):
         self.cell_box = None

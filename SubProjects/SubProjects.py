@@ -3,8 +3,6 @@ import re
 # --------------------TASK DESCRIPTIONS-------------------------------
 # ------Task1: Calculator
 # ------Task2: Library management
-# ------Task3:
-# ------Task4:
 
 
 # -----------GLOBAL Variables----------------
@@ -100,18 +98,19 @@ def task2_body():
     # ----------------Task Variables----------------------------------
     # ----------------Task Classes------------------------------------
     class Book():
-        def __init__(self, title, author, issue_date, genre, rating):
+        def __init__(self, title, author, issue_year, genre, rating):
+            assert rating<6 and rating > 0, "Rating cant be bellow 1 or  above 5"
             self.title = title
             self.author = author
-            self.issue_date = issue_date
+            self.issue_year = issue_year
             self.genre = genre
-            self.critics_rating = rating  # Rating of a book from min 1 to max 5
+            self.critics_rating = int(rating)  # Rating of a book from min 1 to max 5
             self.borrower = None  # Name of person who borrowed the book from the library
             self.status = "IN Library"
             self.time_out_of_library = 0.0  # Time the book spent outside library while being borrowed by the reader
         def __str__(self):
-            return (f"Title: {self.title}, Author: {self.author}, "
-                    f"Issue Date: {self.issue_date}, Genre: {self.genre}, Rating: {self.critics_rating}")
+            return (f"Title: {self.title} / Author: {self.author} / "
+                    f"Issue Date: {self.issue_year} / Genre: {self.genre} / Rating: {self.critics_rating}")
 
     class Reader():
         def __init__(self, name, id, student_status):
@@ -135,7 +134,7 @@ def task2_body():
             assert isinstance(book, Book)
             self.book_list.append(book)
 
-        def search_and_disp_books(self, title="", author="", issue_date="", genre="", rating=""):
+        def search_and_disp_books(self, title="", author="", issue_year="", genre="", rating=""):
             display_list = []
             if title == "":
                 title_search = 0
@@ -145,39 +144,45 @@ def task2_body():
                 author_search = 0
             else:
                 author_search = 1
-            if issue_date == "":
-                issue_date_search = 0
+            if issue_year == "":
+                issue_year_search = 0
             else:
-                issue_date_search = 1
+                issue_year_search = 1
             if genre == "":
                 genre_search = 0
             else:
                 genre_search = 1
             if rating == "":
+                rating = 0
                 rating_search = 0
             else:
                 rating_search = 1
-            search_pattern = [title_search, author_search, issue_date_search, genre_search, rating_search]
+            search_pattern = [title_search, author_search, issue_year_search, genre_search, rating_search]
             for book in self.book_list:
                 current_book_patter_validation = []
-                if title in book.title or title_search == 0:
-                    current_book_patter_validation.append(1)
+                if title_search != 0:
+                    if title in book.title:
+                        current_book_patter_validation.append(1)
                 else:
                     current_book_patter_validation.append(0)
-                if author in book.author or author_search == 0:
-                    current_book_patter_validation.append(1)
+                if author_search != 0:
+                    if author in book.author:
+                        current_book_patter_validation.append(1)
                 else:
                     current_book_patter_validation.append(0)
-                if issue_date == book.issue_date or issue_date_search == 0:
-                    current_book_patter_validation.append(1)
+                if issue_year_search != 0:
+                    if issue_year == book.issue_year:
+                        current_book_patter_validation.append(1)
                 else:
                     current_book_patter_validation.append(0)
-                if genre == book.genre or genre_search == 0:
-                    current_book_patter_validation.append(1)
+                if genre_search != 0:
+                    if genre == book.genre:
+                        current_book_patter_validation.append(1)
                 else:
                     current_book_patter_validation.append(0)
-                if rating < book.rating or rating_search == 0:
-                    current_book_patter_validation.append(1)
+                if rating_search != 0:
+                    if int(rating) < book.critics_rating:
+                        current_book_patter_validation.append(1)
                 else:
                     current_book_patter_validation.append(0)
                 #checks if the bookk satisfies the needed search pattern
@@ -185,30 +190,63 @@ def task2_body():
                     display_list.append(book)
             return display_list
         def display_all_books(self):
-            display_list = []
             for book in self.book_list:
                 print(f"{self.book_list.index(book)+1}: {book}")
 
     # ----------------Task Functions----------------------------------
     # ----------------Task BODY---------------------------------------
-
-
+    library =Library("Saint Norris the delusional's public library")
+    book1 = Book("In the dark woods","Agnus Grey","1994","Comedy",3)
+    book2 = Book("Why so silly", "Joseph Kennedy Richter", "2008", "Drama", 5)
+    book3 = Book("2000 years of 20 seconds", "Agnus Grey", "1999", "Horror", 2)
+    book4 = Book("Red running hood", "Casey Parker", "1991", "Drama", 1)
+    book5 = Book("For whom the Simon calls", "Ken Morsley", "2009", "Historical", 5)
+    book6 = Book("Donuts, women and 20 cents", "Marge Simpson", "1994", "Comedy", 4)
+    library.add_book(book1)
+    library.add_book(book2)
+    library.add_book(book3)
+    library.add_book(book4)
+    library.add_book(book5)
+    library.add_book(book6)
+    loop ="y"
+    print("--------------WELCOME-------------------\n")
+    while True:
+            user_oper = input("What would you like to do?\n"
+                            "1: Search books in library\n"
+                            "2: Display all books in library\n\nEnter only number of operation: ")
+            if not re.fullmatch(r"\d+", user_oper):
+                print("Wrong input!!!! ENTER ONLY GIVEN NUMBERS OF OPERATIONS!\n"
+                      "-------------------------------------------------------")
+                continue
+            if int(user_oper) == 1:
+                print("--------------Book searching-------------\nYou can search books in our library by their\n"
+                      "Title: Enter fullname or more than 4 letters for better results,\n"
+                      "Author: Enter fullname for better results,\n"
+                      "Issue year: Enter only year (e.g. 2000),\n"
+                      "Genre: Enter name of genre,\n"
+                      "Book Rating: Enter in number in range 1-5\n"
+                      "-------------------------------------------------------\n"
+                      "IF THE FIELD IS LEFT EMPTY BOOKS WON'T BE FILTERED BY THAT FIELD\n"
+                      "-------------------------------------------------------"
+                      )
+                user_title = input("\nSearch Title: ")
+                user_author = input("\nSearch Author: ")
+                user_issue_year = input("\nSearch Issue Year: ")
+                user_genre = input("\nSearch Genre: ")
+                user_rating = input("\nSearch Rating: ")
+                data = library.search_and_disp_books(user_title,user_author,user_issue_year,user_genre,user_rating)
+                for i in data:
+                    print(i)
+            elif int(user_oper) == 2:
+                library.display_all_books()
+            else:
+                print("No such operation found!!! ENTER ONLY GIVEN NUMBERS OF OPERATIONS!!")
+                print("-----------------------------------------------------\n")
+            user_continue =input("Do you wish to continue? Enter 'y' for YES or any other key for no.")
+            if user_continue != "y":
+                break
 
 Task02.write_function(task2_body)
-
-# -------------------------------------------------------------------------------------------
-Task03 = Task("x")
-
-
-def task3_body():
-    pass
-    # ----------------Task Variables----------------------------------
-    # ----------------Task Classes------------------------------------
-    # ----------------Task Functions----------------------------------
-    # ----------------Task BODY---------------------------------------
-
-
-Task03.write_function(task3_body)
 
 # -------------MAIN CODE---------------------------------------------------------------------
 

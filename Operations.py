@@ -1,7 +1,9 @@
 import Warehouse_Grid as WG
 import pandas as pd
+import re
+
 global message_to_be_displayed
-message_to_be_displayed = ""
+message_to_be_displayed = None
 def store_box_in_warehouse(box,content):
     """
     Searches for a free cell inside the warehouse among its shelves. when such is found cell class method
@@ -10,23 +12,39 @@ def store_box_in_warehouse(box,content):
     :param content: Description of the content of box. String type.
     :return:
     """
-    warehouse = WG.Warehouse[0]
-    #search for free cell in warehouse
+    warehouse = WG.Warehouse[0] # gets the main class object (Warehouse, which stores all data about shelves, cells and
+                                # their contents
     index = 0
-    for shelf in warehouse.Shelfs_in_warehouse:
+    global message_to_be_displayed
+    if len(box) > 6:
+        message_to_be_displayed = "Box number cannot have more than 6 digits!!!!\nPlease enter proper Number"
+        return
+    if re.fullmatch(r"\d+",box)== None:
+        message_to_be_displayed = "Box number must contain ONLY digits!!!!\nPlease enter proper Number"
+        return
+    if len(box) < 6:
+        box = "B"+"0"*(6-len(box))+box
+    for shelf in warehouse.Shelfs_in_warehouse: #search for free cell in warehouse
         for cell in shelf.shelf_cells:
             if cell.cell_box == None:
                 txt = cell.label.cget("text")
                 cell.label.configure(text=f"{txt[:5]}: {box}", bg="red")
-                cell.put_box_in_cell(box)
-                cell.cell_box.contents =content
-                global message_to_be_displayed
+                cell.put_box_in_cell(box,content)
                 message_to_be_displayed = f"Your box N: {box} was stored in cell N: {txt[:5]}"
                 return
             index += 1
     message_to_be_displayed = "No free cells were found!!!"
 def take_box_frome_warehouse(box):
     warehouse = WG.Warehouse[0]
+    global message_to_be_displayed
+    if len(box) > 6:
+        message_to_be_displayed = "Box number cannot have more than 6 digits!!!!\nPlease enter proper Number"
+        return
+    if re.fullmatch(r"\d+",box)== None:
+        message_to_be_displayed = "Box number must contain ONLY digits!!!!\nPlease enter proper Number"
+        return
+    if len(box) < 6:
+        box = "B"+"0"*(6-len(box))+box
     #search for cell with the box in warehouse
     index = 0
     for shelf in warehouse.Shelfs_in_warehouse:
@@ -36,7 +54,6 @@ def take_box_frome_warehouse(box):
                     txt = cell.label.cget("text")
                     cell.label.configure(text=f"{txt[:5]}: FREE", bg="lightgreen")
                     cell.clear_contents()
-                    global message_to_be_displayed
                     message_to_be_displayed = f"Your box N: {box} was removed from cell N: {txt[:5]}"
                     return
                 index += 1

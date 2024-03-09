@@ -31,10 +31,15 @@ class W_Cell():
         else:
             a = Box(str(box))
             self.cell_box = a
+        txt = self.label.cget("text")
+        self.label.configure(text=f"{txt[:5]}: {box}", bg="red")
         self.cell_box.contents = box_contents
         self.status = "OCCUPIED"
     def clear_contents(self):
         self.cell_box = None
+        txt = self.label.cget("text")
+        self.label.configure(text=f"{txt[:5]}: FREE", bg="lightgreen")
+        self.status = "FREE"
 class W_Shelf():
     def __init__(self,warehouse,name):
         warehouse.Shelfs_in_warehouse.append(self)
